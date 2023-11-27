@@ -23,8 +23,10 @@ local opt =
 	}
 }
 
+--Creates new instance of enemy, setting the HP to 30
 local boss = enemy:new({HP = 30})
 
+--Overwrites the spawn function from enemy with a new spawn function
 function boss:spawn()
 	local bayonetSheet = graphics.newImageSheet("KingBayonet2.png", opt)
 
@@ -62,3 +64,7 @@ end
 function boss:moving()
 	transition.to(bayonetFullBody, {x = math.random(0, 1163), y = math.random(0, 640), time = 5000})
 end
+
+--Returns the boss
+------------------
+return boss
