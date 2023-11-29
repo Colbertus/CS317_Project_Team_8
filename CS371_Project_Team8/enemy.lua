@@ -2,7 +2,9 @@
 
 --Creates table that contains the info for the enemy class
 ----------------------------------------------------------
-local enemy = {tag="enemy", HP=1, xPos=0, yPos=0, fR=0, sR=0, bR=0, fT=1000, sT=500, bT	=500};
+-- I had to remove "local" for this to work. I'm not sure why if someone
+-- else wants to look at it.
+enemy = {tag="enemy", HP=1, xPos=0, yPos=0, fR=0, sR=0, bR=0, fT=1000, sT=500, bT	=500};
 
 --Constructor for enemy
 -----------------------

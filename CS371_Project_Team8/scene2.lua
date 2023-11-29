@@ -1,5 +1,10 @@
 local composer = require("composer")
 local scene = composer.newScene()
+local physics = require("physics")
+physics.start()
+local enemy = require("enemy")
+local enemy1 = require("enemy1")
+local enemy2 = require("enemy2")
 
 -- The scene create function
 -- Instantiate both background images, runtime, and the scroll speed of the background images
@@ -132,6 +137,16 @@ function scene:create(event)
 	init()
 
 end
+
+
+-- I placed this here to see what the enemy sublasses are doing
+
+sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
+-- This will need to be finished after player character is created
+--tr = enemy2:new({xPos= 1300, yPos = math.random(10, 600)})
+--tr:spawn()
+sq:spawn();
+sq:move();
 
 -- The show function of the scene
 ----------------------------------------
