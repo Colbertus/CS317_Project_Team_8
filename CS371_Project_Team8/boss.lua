@@ -61,7 +61,8 @@ function boss:spawn()
 end
 
 --this function will move the bayonet around if the condition isMoving is true
-function boss:moving()
+------------------------------------------------------------------------------
+function boss:move()
 	transition.to(bayonetFullBody, {x = math.random(0, 1163), y = math.random(0, 640), time = 5000})
 end
 
