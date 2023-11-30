@@ -19,6 +19,15 @@ function scene:create(event)
 	local runtime = 0
 	local scrollSpeed = 5
 	local scrollSpeed2 = 1
+	
+-- Instantiate the sound table for the collistion sounds 
+----------------------------------------
+	local soundTable = {
+		bulletToEnemy = audio.loadSound("bulletToEnemy.wav"), 
+		bulletToBoss = audio.loadSound("bulletToBoss.wav"),
+		enemyBullet = audio.loadSound("enemyBulletToPlayer.wav"),
+		bossBullet = audio.loadSound("bossBulletToPlayer.wav")
+	}
 
 -- This function instantiates both background images for the moving background
 ----------------------------------------
@@ -55,15 +64,6 @@ function scene:create(event)
 		bg4.fill = bgImage2
 		bg4.x = display.contentCenterX - display.actualContentWidth
 		bg4.y = display.contentCenterY
-
--- Instantiate the sound table for the collistion sounds 
-----------------------------------------
-		local soundTable = {
-			bulletToEnemy = audio.loadSound("bulletToEnemy.wav"), 
-			bulletToBoss = audio.loadSound("bulletToBoss.wav"),
-			enemyBullet = audio.loadSound("enemyBulletToPlayer.wav"),
-			bossBullet = audio.loadSound("bossBulletToPlayer.wav")
-		}
 		
 -- Instantiate the score and hp HUD 
 ----------------------------------------
