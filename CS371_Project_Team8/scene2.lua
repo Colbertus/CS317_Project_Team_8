@@ -1,6 +1,7 @@
 local composer = require("composer")
 local scene = composer.newScene()
 local physics = require("physics")
+local widget = require("widget")
 physics.start()
 local enemy = require("enemy")
 local enemy1 = require("enemy1")
@@ -86,27 +87,29 @@ function scene:create(event)
 ----------------------------------------
 	local function moveBg(dt)
 		
-		-- Set the scroll speeds of the backgrounds 
-		bg1.x = bg1.x + scrollSpeed2 * dt
-		bg2.x = bg2.x + scrollSpeed2 * dt
+		if bg1.x ~= nil and bg2.x ~= nil and bg3.x ~= nil and bg4.x ~= nil then
+			-- Set the scroll speeds of the backgrounds 
+			bg1.x = bg1.x + scrollSpeed2 * dt
+			bg2.x = bg2.x + scrollSpeed2 * dt
 		
-		bg3.x = bg3.x + scrollSpeed * dt
-		bg4.x = bg4.x + scrollSpeed * dt
+			bg3.x = bg3.x + scrollSpeed * dt
+			bg4.x = bg4.x + scrollSpeed * dt
 		
 		
-		-- Loop the backgrounds whenever they goes off the screen
-		if (bg1.x - display.actualContentWidth / 2.35) > display.actualContentWidth then
-			bg1.x = bg2.x - display.actualContentWidth
-		end
-		if (bg2.x - display.actualContentWidth / 2.35) > display.actualContentWidth then
-			bg2.x = bg1.x - display.actualContentWidth
-		end
+			-- Loop the backgrounds whenever they goes off the screen
+			if (bg1.x - display.actualContentWidth / 2.35) > display.actualContentWidth then
+				bg1.x = bg2.x - display.actualContentWidth
+			end
+			if (bg2.x - display.actualContentWidth / 2.35) > display.actualContentWidth then
+				bg2.x = bg1.x - display.actualContentWidth
+			end
 		
-		if (bg3.x - display.actualContentWidth / 2) > display.actualContentWidth then
-			bg3.x = bg4.x - display.actualContentWidth
-		end
-		if (bg4.x - display.actualContentWidth / 2) > display.actualContentWidth then
-			bg4.x = bg3.x - display.actualContentWidth
+			if (bg3.x - display.actualContentWidth / 2) > display.actualContentWidth then
+				bg3.x = bg4.x - display.actualContentWidth
+			end
+			if (bg4.x - display.actualContentWidth / 2) > display.actualContentWidth then
+				bg4.x = bg3.x - display.actualContentWidth
+			end
 		end
 	end
 
@@ -129,13 +132,45 @@ function scene:create(event)
 -- This function is what starts off the background images along with their other functions 
 -- Call the init function to start moving the background
 ----------------------------------------
-	function init()
+	local function init()
 		addScrollableBg()
 		Runtime:addEventListener("enterFrame", enterFrame)
 	end
 
 	init()
-
+	
+-- The function for when the "return" button gets pressed
+----------------------------------------
+	local function onPressEvent(event)
+		composer.gotoScene(
+            "scene1",
+            {
+                effect = "slideLeft",
+                params = {}
+            }
+        )
+		
+		composer.removeScene("scene2")
+	end 
+	
+-- Instantiate the "return" button for the scene 
+----------------------------------------
+	local returnButton = widget.newButton(
+		{
+			label = "Return",
+			onEvent = onPressEvent,
+			shape = "roundedRect", 
+			width = 200,
+			height = 100,
+			cornerRadius = 2,
+			fontSize = 30
+		}
+	)
+	
+	returnButton.x = display.contentCenterX
+	returnButton.y = 70
+	
+	sceneGroup:insert(returnButton)
 end
 
 
