@@ -187,6 +187,13 @@ function scene:create(event)
 				sq:move()
 				print("Enemy 1 spawned")
 			end
+			
+			if en2 > 0.5 then
+				tri = enemy2:new({xPos = 1300, yPos = math.random(10, 600)})
+				tri:spawn()
+				tri:move()
+				print("Enemy 2 spawned")
+			end
 		end 
 	end 
 end
