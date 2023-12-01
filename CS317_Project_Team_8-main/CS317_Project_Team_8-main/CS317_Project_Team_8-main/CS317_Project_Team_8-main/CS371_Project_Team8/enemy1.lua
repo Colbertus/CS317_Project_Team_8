@@ -9,7 +9,7 @@ enemy1 = enemy:new({HP=2, fR = 720, fT = 1500, bT = 1500});
 function enemy1:spawn()
     self.shape = display.newRect(self.xPos, self.yPos, 30, 30);
     self.shape.pp = self;
-    self.shape.tag = "enemy1";
+    self.shape.tag = "enemy";
     self.shape:setFillColor(0, 1, 1);
     physics.addBody(self.shape, "kinematic");
 end

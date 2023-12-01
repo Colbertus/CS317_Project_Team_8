@@ -6,6 +6,7 @@ physics.start()
 local enemy = require("enemy")
 local enemy1 = require("enemy1")
 local enemy2 = require("enemy2")
+local boss = require("boss")
 physics.setGravity(0,0);
 
 -- The scene create function
@@ -23,6 +24,7 @@ function scene:create(event)
 	local runtime = 0
 	local scrollSpeed = 5
 	local scrollSpeed2 = 1
+	local bossHasSpawn = false
 
 -- border to make projectiles despawn
 
@@ -61,53 +63,55 @@ function scene:create(event)
 -- Projectile 
 	local cnt = 0;
 	local function fire (event) 
-	  if (cnt < 3) then
-	    cnt = cnt+1;
-		local p = display.newCircle (player.x+75, player.y, 20);
-		p.anchorX = 1;
-		p:setFillColor(0,1,0);
-		physics.addBody (p, "dynamic", {radius=5} );
-		p:applyForce(2, 0, p.x, p.y);
+	    if (cnt < 3) then
+			cnt = cnt+1;
+			local p = display.newCircle (player.x+75, player.y, 20);
+			p.anchorX = 1;
+			p:setFillColor(0,1,0);
+			physics.addBody (p, "dynamic", {radius=5} );
+			p:applyForce(2, 0, p.x, p.y);
 
-		--audio.play( soundTable["shootSound"] );
+			--audio.play( soundTable["shootSound"] );
 
-		local function removeProjectile (event)
-	      if (event.phase=="began") then
-		   	 event.target:removeSelf();
-	         event.target=nil;
-	         cnt = cnt - 1;
+			local function removeProjectile (event)
+				if (event.phase=="began") then
+				event.target:removeSelf();
+				event.target=nil;
+				cnt = cnt - 1;
 
-	         if (event.other.tag == "enemy") then
+					if (event.other.tag == "enemy") then
 
-	         	event.other.pp:hit();
+						event.other.pp:hit();
 	         	
-	         end
-	      end
-	    end
-	    p:addEventListener("collision", removeProjectile);
-	  end
+					end
+				end
+			end
+			p:addEventListener("collision", removeProjectile);
+		end
 	end
 
 	Runtime:addEventListener("tap", fire)
 
 -- player collision
 
-		local function removeProjectile (event)
+		local function playerCollision (event)
 	      if (event.phase=="began") then
 		   	 
+			if(hp > 0) then
 		   	hp = hp - 1
 		   	hpText:removeSelf();
 		    hpText=nil;
 	      	hpText = display.newText("HP: "..hp, display.contentCenterX + 400, display.statusBarHeight, native.systemFont, 35)
+	        end
 	      	if (hp == 0) then
 
 	      		gameOverText = display.newText("Game Over", display.contentCenterX, display.contentCenterY, native.systemFont, 60)
+	        end
 
-	      	end
 
 	      end
 	    end
-	    player:addEventListener("collision", removeProjectile);
+	    player:addEventListener("collision", playerCollision);
 	
 -- Instantiate the sound table for the collistion sounds 
 ----------------------------------------
@@ -239,6 +243,9 @@ function scene:create(event)
         )
 		
 		composer.removeScene("scene2")
+		
+		timer.pause(spawn)
+		timer.pause(bossMoving)
 	end 
 	
 -- Instantiate the "return" button for the scene 
@@ -267,7 +274,7 @@ function scene:create(event)
 		timer = timer + 1   
 		local en1 = math.random() 
 		local en2 = math.random() 
-		if timer % 3 == 0 then 
+		if (timer % 3 == 0 and timer < 240) then 
 			if en1 < 0.5 then
 				sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
 				sq:spawn()
@@ -281,19 +288,17 @@ function scene:create(event)
 				tri:move()
 				print("Enemy 2 spawned")
 			end
+		elseif (timer >= 240) then
+			if (bossHasSpawn == false) then
+				bayonet = boss:new({xPos = 1300, yPos = math.random(10, 600)})
+				bayonet:spawn()
+				bossHasSpawn = true
+			end
+			bayonet:move()
+			bossMoving = timer.performWithDelay(5000, bayonet:move, 0)
 		end 
 	end 
 end
-
--- I placed this here to see what the enemy sublasses are doing
-
---sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
--- This will need to be finished after player character is created
---tr = enemy2:new({xPos= 1300, yPos = math.random(10, 600)})
---tr:spawn();
---tr:move(); 
---sq:spawn();
---sq:move();
 
 -- The show function of the scene
 ----------------------------------------
@@ -303,7 +308,7 @@ function scene:show(event)
 	if (phase == "will") then
 	 
 	elseif ( phase == "did" ) then
-		spawn = timer.performWithDelay(1000, enemySpawn, 100) 
+		spawn = timer.performWithDelay(1000, enemySpawn, 400) 
 	end
 end
 
