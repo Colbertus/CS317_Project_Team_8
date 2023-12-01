@@ -12,6 +12,7 @@ local enemy2 = require("enemy2")
 -- Instantiate the hp at 5 and the score at 0 
 ----------------------------------------
 function scene:create(event)
+	local timer = 0 
 	local score = 0 
 	local hp = 5
 	local sceneGroup = self.view
@@ -171,17 +172,34 @@ function scene:create(event)
 	returnButton.y = 70
 	
 	sceneGroup:insert(returnButton)
+	
+-- This function uses the timer variable declared in the beginning and spawns an enemy randomly after 3 seconds
+-- Use this function to spawn the boss since the timer logic is there
+----------------------------------------
+	function enemySpawn(event)
+		timer = timer + 1   
+		local en1 = math.random() 
+		local en2 = math.random() 
+		if timer % 3 == 0 then 
+			if en1 < 0.5 then
+				sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
+				sq:spawn()
+				sq:move()
+				print("Enemy 1 spawned")
+			end
+		end 
+	end 
 end
-
 
 -- I placed this here to see what the enemy sublasses are doing
 
-sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
+--sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
 -- This will need to be finished after player character is created
 --tr = enemy2:new({xPos= 1300, yPos = math.random(10, 600)})
---tr:spawn()
-sq:spawn();
-sq:move();
+--tr:spawn();
+--tr:move(); 
+--sq:spawn();
+--sq:move();
 
 -- The show function of the scene
 ----------------------------------------
@@ -191,7 +209,7 @@ function scene:show(event)
 	if (phase == "will") then
 	 
 	elseif ( phase == "did" ) then
-
+		spawn = timer.performWithDelay(1000, enemySpawn, 100) 
 	end
 end
 
@@ -203,7 +221,7 @@ function scene:hide(event)
 	if (phase == "will") then
 
 	elseif ( phase == "did" ) then
-
+		
 	end
 end
 
