@@ -1,5 +1,7 @@
 --Caleb Bagwell
 
+local soundTable = require("soundTable")
+
 --Creates table that contains the info for the enemy class
 ----------------------------------------------------------
 -- I had to remove "local" for this to work. I'm not sure why if someone
@@ -58,7 +60,8 @@ end
 ---------------------------------------------------------------
 function enemy:hit () 
 	self.HP = self.HP - 1;
-	if (self.HP > 0) then 
+	if (self.HP > 0) then
+		audio.play(soundTable["bulletToEnemy"]);
 		self.shape:setFillColor(0.5,0.5,0.5);
 		
     transition.cancel( self.shape );
@@ -83,6 +86,7 @@ function enemy:shoot (interval)
 		p.anchorY=0;
 		physics.addBody (p, "dynamic");
 		p:applyForce(0, 1, p.x, p.y);
+		audio.play(soundTable["enemyBullet"])
 		
 		local function shotHandler (event)
 			if (event.phase == "began") then

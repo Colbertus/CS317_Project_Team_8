@@ -66,6 +66,50 @@ function boss:move()
 	transition.to(bayonetFullBody, {x = math.random(0, 1163), y = math.random(0, 640), time = 5000})
 end
 
+--This function will calculate whether or not the enemy is dead
+---------------------------------------------------------------
+function enemy:hit () 
+	self.HP = self.HP - 1;
+	if (self.HP > 0) then
+		audio.play(soundTable["bulletToBoss"]);
+		self.shape:setFillColor(0.5,0.5,0.5);
+		
+    transition.cancel( self.shape );
+		
+		if (self.timerRef ~= nil) then
+			timer.cancel ( self.timerRef );
+		end
+
+		self.shape:removeSelf();
+		self.shape=nil;	 
+	end		
+end
+
+--This function will cause the enemy to shoot bullets
+-----------------------------------------------------
+function enemy:shoot (interval)
+	interval = interval or 1500;
+	local function createShot(obj)
+		local p = display.newRect (obj.shape.x, obj.shape.y+50, 
+                               10,10);
+		p:setFillColor(1,0,0);
+		p.anchorY=0;
+		physics.addBody (p, "dynamic");
+		p:applyForce(0, 1, p.x, p.y);
+		audio.play(soundTable["bossBullet"])
+		
+		local function shotHandler (event)
+			if (event.phase == "began") then
+			event.target:removeSelf();
+			event.target = nil;
+		end
+    end
+		p:addEventListener("collision", shotHandler);		
+	end
+	self.timerRef = timer.performWithDelay(interval, 
+		function (event) createShot(self) end, -1);
+end
+
 --Returns the boss
 ------------------
 return boss
