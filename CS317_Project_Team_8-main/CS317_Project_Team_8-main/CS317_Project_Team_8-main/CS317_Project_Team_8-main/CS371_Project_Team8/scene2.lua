@@ -14,7 +14,7 @@ physics.setGravity(0,0);
 -- Instantiate the hp at 5 and the score at 0 
 ----------------------------------------
 function scene:create(event)
-	local timer = 0 
+	local gameTimer = 0 
 	local score = 0 
 	local hp = 5
 	local hpText
@@ -236,7 +236,9 @@ function scene:create(event)
 		composer.removeScene("scene2")
 		
 		timer.pause(spawn)
-		timer.pause(bossMoving)
+		if bossMoving ~= nil then
+			timer.pause(bossMoving)
+		end
 	end 
 	
 -- Instantiate the "return" button for the scene 
@@ -257,15 +259,18 @@ function scene:create(event)
 	returnButton.y = 70
 	
 	sceneGroup:insert(returnButton)
+	sceneGroup:insert(right)
+	sceneGroup:insert(player)
+	sceneGroup:insert(controlBar)
 	
 -- This function uses the timer variable declared in the beginning and spawns an enemy randomly after 3 seconds
 -- Use this function to spawn the boss since the timer logic is there
 ----------------------------------------
 	function enemySpawn(event)
-		timer = timer + 1   
+		gameTimer = gameTimer + 1   
 		local en1 = math.random() 
 		local en2 = math.random() 
-		if (timer % 3 == 0 and timer < 240) then 
+		if (gameTimer % 3 == 0 and gameTimer < 240) then 
 			if en1 < 0.5 then
 				sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
 				sq:spawn()
@@ -279,16 +284,18 @@ function scene:create(event)
 				tri:move()
 				print("Enemy 2 spawned")
 			end
-		elseif (timer >= 240) then
+		elseif (gameTimer >= 240) then
 			if (bossHasSpawn == false) then
 				bayonet = boss:new({xPos = 1300, yPos = math.random(10, 600)})
 				bayonet:spawn()
 				bossHasSpawn = true
 			end
 			bayonet:move()
-			bossMoving = timer.performWithDelay(5000, bayonet:move, 0)
+			bossMoving = timer.performWithDelay(5000, bayonet:move(), 0)
 		end 
-	end 
+	end
+	
+	spawn = timer.performWithDelay(1000, enemySpawn, 400)
 end
 
 -- The show function of the scene
@@ -299,7 +306,7 @@ function scene:show(event)
 	if (phase == "will") then
 	 
 	elseif ( phase == "did" ) then
-		spawn = timer.performWithDelay(1000, enemySpawn, 400) 
+		 
 	end
 end
 
