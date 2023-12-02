@@ -64,7 +64,7 @@ end
 --this function will move the bayonet around if the condition isMoving is true
 ------------------------------------------------------------------------------
 function boss:move()
-	transition.to(bayonetFullBody, {x = math.random(0, 1163), y = math.random(0, 640), time = 5000})
+	transition.to(self.shape, {x = math.random(0, 1163), y = math.random(0, 640), time = 5000})
 end
 
 --This function will calculate whether or not the enemy is dead
