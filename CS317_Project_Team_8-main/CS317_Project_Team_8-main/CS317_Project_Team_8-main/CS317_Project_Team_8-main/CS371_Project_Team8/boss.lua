@@ -1,6 +1,7 @@
 --Caleb Bagwell
 
 local enemy = require("enemy")
+local soundTable = require("soundTable")
 
 --creates the frames for all the individual body parts of the Bayonet
 local opt =

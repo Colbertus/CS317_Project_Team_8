@@ -91,6 +91,51 @@ function scene:create(event)
 	end
 
 	Runtime:addEventListener("tap", fire)
+	
+	-- function that'll display the game over or you won text as well as the return button
+	--------------------------------------
+	local function endOfGame(text)
+		
+		gameOverText = display.newText(text, display.contentCenterX, display.contentCenterY, native.systemFont, 60)
+		sceneGroup:insert("gameOverText")
+		-- The function for when the "return" button gets pressed
+		----------------------------------------
+		local function onPressEvent(event)
+			composer.gotoScene(
+				"scene1",
+				{
+					effect = "slideLeft",
+					params = {}
+				}
+			)
+		
+			composer.removeScene("scene2")
+		
+			timer.pause(spawn)
+			if bossMoving ~= nil then
+				timer.pause(bossMoving)
+			end
+		end
+	
+		-- Instantiate the "return" button for the scene 
+		----------------------------------------
+		local returnButton = widget.newButton(
+			{
+				label = "Return",
+				onEvent = onPressEvent,
+				shape = "roundedRect", 
+				width = 200,
+				height = 100,
+				cornerRadius = 2,
+				fontSize = 30
+			}
+		)
+	
+		returnButton.x = display.contentCenterX
+		returnButton.y = 70
+	
+		sceneGroup:insert(returnButton)
+	end
 
 -- player collision
 
@@ -105,7 +150,7 @@ function scene:create(event)
 	        end
 	      	if (hp == 0) then
 
-	      		gameOverText = display.newText("Game Over", display.contentCenterX, display.contentCenterY, native.systemFont, 60)
+	      		endOfGame("Game Over")
 	        end
 
 
@@ -222,46 +267,10 @@ function scene:create(event)
 
 	init()
 	
--- The function for when the "return" button gets pressed
-----------------------------------------
-	local function onPressEvent(event)
-		composer.gotoScene(
-            "scene1",
-            {
-                effect = "slideLeft",
-                params = {}
-            }
-        )
-		
-		composer.removeScene("scene2")
-		
-		timer.pause(spawn)
-		if bossMoving ~= nil then
-			timer.pause(bossMoving)
-		end
-	end 
-	
--- Instantiate the "return" button for the scene 
-----------------------------------------
-	local returnButton = widget.newButton(
-		{
-			label = "Return",
-			onEvent = onPressEvent,
-			shape = "roundedRect", 
-			width = 200,
-			height = 100,
-			cornerRadius = 2,
-			fontSize = 30
-		}
-	)
-	
-	returnButton.x = display.contentCenterX
-	returnButton.y = 70
-	
-	sceneGroup:insert(returnButton)
 	sceneGroup:insert(right)
 	sceneGroup:insert(player)
 	sceneGroup:insert(controlBar)
+	sceneGroup:insert(hpText)
 	
 -- This function uses the timer variable declared in the beginning and spawns an enemy randomly after 3 seconds
 -- Use this function to spawn the boss since the timer logic is there

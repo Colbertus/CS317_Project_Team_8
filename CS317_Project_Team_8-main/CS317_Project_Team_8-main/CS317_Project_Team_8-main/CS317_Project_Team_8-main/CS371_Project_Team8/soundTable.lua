@@ -6,3 +6,5 @@ local soundTable = {
 		enemyBullet = audio.loadSound("enemyBulletToPlayer.wav"),
 		bossBullet = audio.loadSound("bossBulletToPlayer.wav")
 	}
+	
+return soundTable
