@@ -1,3 +1,5 @@
+--scene 1
+
 local composer = require("composer")
 local widget = require("widget") 
 local scene = composer.newScene()

@@ -1,3 +1,5 @@
+--soundTable
+
 -- Instantiate the sound table for the collistion sounds 
 ----------------------------------------
 local soundTable = {

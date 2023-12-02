@@ -1,3 +1,5 @@
+--enemy2
+
 local Enemy = require("enemy")
 
 enemy2 = enemy:new({HP = 3, bR = 360, fT = 500, bT = 300});

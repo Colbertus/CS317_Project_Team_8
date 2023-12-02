@@ -1,3 +1,5 @@
+--scene2
+
 local composer = require("composer")
 local scene = composer.newScene()
 local physics = require("physics")
@@ -97,7 +99,7 @@ function scene:create(event)
 	local function endOfGame(text)
 		
 		gameOverText = display.newText(text, display.contentCenterX, display.contentCenterY, native.systemFont, 60)
-		sceneGroup:insert("gameOverText")
+		sceneGroup:insert(gameOverText)
 		-- The function for when the "return" button gets pressed
 		----------------------------------------
 		local function onPressEvent(event)
@@ -280,7 +282,7 @@ function scene:create(event)
 		print(gameTimer)
 		local en1 = math.random() 
 		local en2 = math.random() 
-		if (gameTimer % 3 == 0 and gameTimer < 20) then 
+		if (gameTimer % 3 == 0 and gameTimer < 120) then 
 			if en1 < 0.5 then
 				sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
 				sq:spawn()
@@ -294,7 +296,7 @@ function scene:create(event)
 				tri:move()
 				print("Enemy 2 spawned")
 			end
-		elseif (gameTimer >= 20) then
+		elseif (gameTimer >= 120) then
 			if (bossHasSpawn == false) then
 				print("Boss Spawned")
 				bayonet = boss:new({xPos = 1300, yPos = math.random(10, 600)})
