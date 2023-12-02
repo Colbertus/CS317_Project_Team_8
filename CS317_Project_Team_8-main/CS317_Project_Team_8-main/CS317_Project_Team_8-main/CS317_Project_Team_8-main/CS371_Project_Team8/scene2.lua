@@ -277,9 +277,10 @@ function scene:create(event)
 ----------------------------------------
 	function enemySpawn(event)
 		gameTimer = gameTimer + 1   
+		print(gameTimer)
 		local en1 = math.random() 
 		local en2 = math.random() 
-		if (gameTimer % 3 == 0 and gameTimer < 240) then 
+		if (gameTimer % 3 == 0 and gameTimer < 20) then 
 			if en1 < 0.5 then
 				sq = enemy1:new({xPos = 1300, yPos = math.random(10, 600)})
 				sq:spawn()
@@ -293,8 +294,9 @@ function scene:create(event)
 				tri:move()
 				print("Enemy 2 spawned")
 			end
-		elseif (gameTimer >= 240) then
+		elseif (gameTimer >= 20) then
 			if (bossHasSpawn == false) then
+				print("Boss Spawned")
 				bayonet = boss:new({xPos = 1300, yPos = math.random(10, 600)})
 				bayonet:spawn()
 				bossHasSpawn = true
@@ -303,8 +305,6 @@ function scene:create(event)
 			bossMoving = timer.performWithDelay(5000, bayonet:move(), 0)
 		end 
 	end
-	
-	spawn = timer.performWithDelay(1000, enemySpawn, 400)
 end
 
 -- The show function of the scene
@@ -315,7 +315,7 @@ function scene:show(event)
 	if (phase == "will") then
 	 
 	elseif ( phase == "did" ) then
-		 
+		 spawn = timer.performWithDelay(1000, enemySpawn, 400)
 	end
 end
 

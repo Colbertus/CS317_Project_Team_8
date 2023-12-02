@@ -29,7 +29,7 @@ local boss = enemy:new({HP = 30})
 
 --Overwrites the spawn function from enemy with a new spawn function
 function boss:spawn()
-	local bayonetSheet = graphics.newImageSheet("KingBayonet2.png", opt)
+	local bayonet = graphics.newImageSheet("KingBayonet2.png", opt)
 
 	--displays all of the body parts to form the full body
 	local bottomFin = display.newImage(bayonet, 8)
@@ -44,15 +44,15 @@ function boss:spawn()
 	mainBody.x = display.contentWidth/2
 	mainBody.y = display.contentHeight/2
 
-	local snout = display.newSprite(bayonet, 2)
+	local snout = display.newImage(bayonet, 2)
 	snout.x = display.contentWidth/2 - 90
 	snout.y = display.contentHeight/2 + 3
 
-	local mouth = display.newSprite(bayonet, 5)
+	local mouth = display.newImage(bayonet, 5)
 	mouth.x = display.contentWidth/2 - 39
 	mouth.y = display.contentHeight/2 + 7
 
-	local backFin = display.newSprite(bayonet, 11)
+	local backFin = display.newImage(bayonet, 11)
 	backFin.x = display.contentWidth/2 + 100
 	backFin.y = display.contentHeight/2 - 4
 	--creates a new group that'll house all the individual body parts
