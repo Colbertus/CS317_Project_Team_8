@@ -40,6 +40,7 @@ function scene:create(event)
 
 	local controlBar = display.newRect (20, display.contentCenterY, 150, display.contentHeight);
 	controlBar:setFillColor(1,1,1,0.5);
+	physics.addBody(controlBar, "kinematic")
 
 -- player control
 	local function move ( event )
@@ -97,7 +98,7 @@ function scene:create(event)
 	local function endOfGame(text)
 		
 		gameOverText = display.newText(text, display.contentCenterX, display.contentCenterY, native.systemFont, 60)
-		sceneGroup:insert("gameOverText")
+		sceneGroup:insert(gameOverText)
 		-- The function for when the "return" button gets pressed
 		----------------------------------------
 		local function onPressEvent(event)
@@ -139,24 +140,37 @@ function scene:create(event)
 
 -- player collision
 
-		local function playerCollision (event)
-	      if (event.phase=="began") then
+	local function playerCollision (event)
+	    if (event.phase=="began") then
 		   	 
 			if(hp > 0) then
-		   	hp = hp - 1
-		   	hpText:removeSelf();
-		    hpText=nil;
-	      	hpText = display.newText("HP: "..hp, display.contentCenterX + 400, display.statusBarHeight, native.systemFont, 35)
+				hp = hp - 1
+				hpText:removeSelf();
+				hpText=nil;
+				hpText = display.newText("HP: "..hp, display.contentCenterX + 400, display.statusBarHeight, native.systemFont, 35)
 	        end
 	      	if (hp == 0) then
-
+				player:removeSelf()
+				player = nil
 	      		endOfGame("Game Over")
 	        end
 
 
-	      end
 	    end
-	    player:addEventListener("collision", playerCollision);
+	end
+	player:addEventListener("collision", playerCollision);
+	
+--enemy collision
+
+	local function enemyCollision (event)
+		if (event.phase == "began") then
+		
+			if (event.other == player or event.other == controlBar) then
+				event.target:removeSelf()
+				event.target = nil
+			end
+		end
+	end
 
 -- This function instantiates both background images for the moving background
 ----------------------------------------
@@ -293,7 +307,7 @@ function scene:create(event)
 				tri:move()
 				print("Enemy 2 spawned")
 			end
-		elseif (gameTimer >= 240) then
+		elseif (gameTimer >= 120) then
 			if (bossHasSpawn == false) then
 				bayonet = boss:new({xPos = 1300, yPos = math.random(10, 600)})
 				bayonet:spawn()
@@ -301,7 +315,7 @@ function scene:create(event)
 			end
 			bayonet:move()
 			bossMoving = timer.performWithDelay(5000, bayonet:move(), 0)
-		end 
+		end
 	end
 	
 	spawn = timer.performWithDelay(1000, enemySpawn, 400)
