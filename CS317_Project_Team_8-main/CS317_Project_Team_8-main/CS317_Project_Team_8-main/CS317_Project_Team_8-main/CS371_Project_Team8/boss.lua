@@ -58,7 +58,7 @@ function boss:spawn()
 	--creates a new group that'll house all the individual body parts
 	self.shape = display.newGroup(bottomFin, topFin, mainBody, snout, mouth, backFin)
 	self.shape.pp = self;
-	self.shape.tag = "enemy";
+	self.shape.tag = "boss";
 end
 
 --this function will move the bayonet around if the condition isMoving is true
