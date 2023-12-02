@@ -57,7 +57,7 @@ function scene:create(event)
 			   player.y = y;		
 			end
 
-		 end
+		end
 	end
 	controlBar:addEventListener("touch", move);
 
@@ -150,8 +150,6 @@ function scene:create(event)
 				hpText = display.newText("HP: "..hp, display.contentCenterX + 400, display.statusBarHeight, native.systemFont, 35)
 	        end
 	      	if (hp == 0) then
-				player:removeSelf()
-				player = nil
 	      		endOfGame("Game Over")
 	        end
 
